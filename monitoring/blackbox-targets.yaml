@@ -1,0 +1,39 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: blackbox-targets
+  namespace: monitoring
+data:
+  blackbox-targets.json: |
+    [
+      { 
+        "targets":["http://monitoring-grafana.monitoring"],
+        "labels" :{
+            "application": "grafana"
+         }
+      },
+      { 
+        "targets":["http://prometheus-operated.monitoring:9090"],
+        "labels" :{
+            "application": "prometheus"
+         }
+      },
+      { 
+        "targets":["http://alertmanager-operated.monitoring:9093"],
+        "labels" :{
+            "application": "alertmanager"
+         }
+      },
+      { 
+        "targets":["http://blackbox-exporter-prometheus-blackbox-exporter.monitoring:9115"],
+        "labels" :{
+            "application": "blackbox-exporter"
+         }
+      },
+      { 
+        "targets":["http://karma.monitoring:8000"],
+        "labels" :{
+            "application": "karma"
+         }
+      }
+    ]  

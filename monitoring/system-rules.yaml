@@ -1,0 +1,36 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  labels:
+    app: kube-prometheus-stack
+    release: monitoring
+  name: system-rules
+  namespace: monitoring
+spec:
+  groups:
+  - name: systemd-state
+    rules:
+    - alert: NodeServiceDown
+      annotations:
+        message: Systemd service {{ $labels.name }} on {{ $labels.instance }} is in active state.
+        runbook_url: ...
+      expr: node_systemd_unit_state{state="active"} != 1
+      for: 60s
+      labels:
+        severity: critical
+  - name: disk-io-activity
+    rules:
+    - alert: UnusualDiskReadActivity
+      annotations:
+        message: "Disk on {{ $labels.instance }} is probably reading too much data (> 50 MB/s), value {{ $value }}"
+      expr: sum by (instance) (irate(node_disk_read_bytes_total[2m])) / 1024 / 1024 > 50
+      for: 10m
+      labels:
+        severity: warning
+    - alert: UnusualDiskWriteActivity
+      annotations:
+        message: "Disk on {{ $labels.instance }} is probably writing too much data (> 50 MB/s), value {{ $value }}"
+      expr: sum by (instance) (irate(node_disk_written_bytes_total[2m])) / 1024 / 1024 > 50
+      for: 10m
+      labels:
+        severity: warning      

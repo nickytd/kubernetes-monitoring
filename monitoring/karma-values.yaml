@@ -1,0 +1,67 @@
+ingress:
+  enabled: true
+  hosts:
+    - karma.local
+service:
+  type: ClusterIP
+  port: 8000  
+
+configMap:
+  enabled: true
+  rawConfig:
+    alertmanager:
+      interval: 60s
+      servers:
+      - name: kind
+        uri: 'http://alertmanager-operated:9093'
+        timeout: 10s
+    annotations:
+      default:
+        hidden: false
+      hidden:
+        - help
+      visible: []
+    debug: false
+    filters:
+      default:
+        - "severity!=none"
+        - "@state=active"
+    karma:
+      name: karma
+    labels:
+      color:
+        static:
+          - job
+        unique:
+          - cluster
+          - namespace
+          - alertgroup
+          - severity
+      keep: []
+      strip:
+      - prometheus
+    listen:
+      address: "0.0.0.0"
+      port: 8080
+      prefix: /
+    log:
+      config: false
+      level: info
+    silences:
+      comments:
+        linkDetect:
+          rules:
+    receivers:
+      keep: []
+      strip: []
+    silenceForm:
+      strip:
+        labels:
+          - job
+    ui:
+      refresh: 30s
+      hideFiltersWhenIdle: true
+      colorTitlebar: false
+      minimalGroupWidth: 420
+      alertsPerGroup: 5
+      collapseGroups: collapsedOnMobile

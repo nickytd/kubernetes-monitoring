@@ -1,0 +1,168 @@
+kubeControllerManager:
+  enabled: false
+kubeEtcd:
+  enabled: false
+kubeScheduler:
+  enabled: false
+kubeProxy:
+  enabled: false
+
+# Disabled due to missing verticalpodaitoscaler
+kube-state-metrics: 
+
+kubeStateMetrics:
+  serviceMonitor:
+    metricRelabelings:
+    - separator: ;
+      regex: label_(.+)
+      replacement: $1
+      action: labelmap
+    - separator: ;
+      regex: label_(.+)
+      action: labeldrop
+    - sourceLabels: ["system_id","namespace"]
+      separator: ;
+      targetLabel: system_id
+      regex: '([a-zA-Z0-9._-]*)|(?:;)([a-zA-Z0-9._-]*)'
+      replacement: ${0}
+    - sourceLabels: ["system_id"]
+      targetLabel: system_id
+      regex: '(?:;?)?(.*)'
+      replacement: /minikube/${1}       
+
+## Define Log Format
+# Use logfmt (default) or json-formatted logging
+logFormat: logfmt
+
+## Log level for Alertmanager to be configured with.
+##
+logLevel: info
+
+prometheus:
+  ingress:
+    enabled: true
+    hosts:
+      - prometheus.local
+  prometheusSpec:
+    retention: 1d
+    externalLabels:
+      cluster: /kind
+    externalUrl: http://prometheus.local
+    configMaps: ['blackbox-targets']
+    additionalScrapeConfigs:
+      # config for prometheus-blackbox-exporter, see
+      # - https://github.com/coreos/prometheus-operator/blob/master/Documentation/additional-scrape-config.md
+      # - https://github.com/coreos/prometheus-operator/issues/256#issuecomment-470600179
+      - job_name: blackbox-monitoring
+        metrics_path: /probe
+        params:
+          module: [http_2xx]
+        file_sd_configs:
+        - files: ['/etc/prometheus/configmaps/blackbox-targets/blackbox-targets.json']
+        relabel_configs:
+        - source_labels: [__address__]
+          target_label: __param_target
+        - source_labels: [__param_target]
+          target_label: instance
+        - target_label: __address__
+          replacement: blackbox-exporter-prometheus-blackbox-exporter:9115  
+prometheus-node-exporter:
+  extraArgs:
+  - --log.level=info
+  - --collector.systemd
+  - --collector.processes
+  - --collector.systemd.unit-whitelist=(docker|kubelet|containerd).service
+  - --collector.filesystem.ignored-mount-points=^/(dev|proc|sys|.*var/lib/docker/.+|.*var/lib/kubelet/.+)($|/)
+  - --collector.filesystem.ignored-fs-types=^(autofs|binfmt_misc|cgroup|configfs|debugfs|devpts|devtmpfs|fusectl|hugetlbfs|mqueue|overlay|proc|procfs|pstore|rpc_pipefs|securityfs|sysfs|tracefs|netfs)$
+  extraHostVolumeMounts:
+    - name: system-dbus-socket
+      mountPath: /var/run/dbus/system_bus_socket
+      readOnly: true
+      hostPath: /var/run/dbus/system_bus_socket
+  resources:
+    limits:
+      cpu: 100m
+      memory: 100Mi
+    requests:
+      cpu: 25m
+      memory: 10Mi    
+alertmanager:
+  ingress:
+    enabled: true
+    hosts:
+      - alertmanager.local
+  alertmanagerSpec:
+    externalUrl: http://alertmanager.local
+grafana:
+  additionalDataSources:
+    - name: elk-containers
+      type: elasticsearch
+      access: proxy
+      database: "[containers-]YYYY.MM.DD"
+      url: https://elk-client.logging.svc:9200
+      basicAuth: true
+      basicAuthUser: esadmin
+      editable: false
+      jsonData:
+        interval: Daily
+        timeField: "@timestamp"
+        esVersion: 70
+        logMessageField: message
+        tlsSkipVerify: true
+      secureJsonData:
+        basicAuthPassword: esadmin
+    - name: elk-journals
+      type: elasticsearch
+      access: proxy
+      database: "[journals-]YYYY.MM.DD"
+      url: https://elk-client.logging.svc:9200
+      basicAuth: true
+      basicAuthUser: esadmin
+      editable: false
+      jsonData:
+        interval: Daily
+        timeField: "@timestamp"
+        esVersion: 70
+        logMessageField: message
+        tlsSkipVerify: true
+      secureJsonData:
+        basicAuthPassword: esadmin    
+  dashboardProviders: 
+    dashboardproviders.yaml:
+      apiVersion: 1
+      providers:
+      - name: 'default'
+        orgId: 1
+        folder: ''
+        type: file
+        disableDeletion: false
+        editable: true
+        options:
+          path: /var/lib/grafana/dashboards/default
+  dashboards:
+    default:
+      node-exporter-full:
+        gnetId: 1860
+        revision: 21
+        datasource: Prometheus
+      blackbox-exporter:
+        gnetId: 7587
+        revision: 3
+        datasource: Prometheus
+  plugins:
+    - grafana-piechart-panel
+  sidecar:
+    dashboards:
+      enabled: true
+      label: grafana_dashboard
+  adminUser: admin
+  adminPassword: admin    
+  grafana.ini:
+    auth.anonymous:
+      enabled: true
+      org_name: Local
+      org_role: Admin
+  ingress:
+    enabled: true
+    hosts:
+      - grafana.local
