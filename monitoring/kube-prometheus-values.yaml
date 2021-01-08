@@ -47,6 +47,12 @@ prometheus:
     retention: 1d
     externalLabels:
       cluster: /kind
+    ruleSelector: {}
+    serviceMonitorSelector: {}
+    podMonitorSelector: {}
+    ruleSelectorNilUsesHelmValues: false
+    serviceMonitorSelectorNilUsesHelmValues: false
+    podMonitorSelectorNilUsesHelmValues: false
     externalUrl: http://prometheus.local
     configMaps: ['blackbox-targets']
     additionalScrapeConfigs:
@@ -155,13 +161,15 @@ grafana:
     dashboards:
       enabled: true
       label: grafana_dashboard
-  adminUser: admin
-  adminPassword: admin    
+  adminUser: "admin"
+  adminPassword: "admin"
   grafana.ini:
     auth.anonymous:
       enabled: true
       org_name: Local
       org_role: Admin
+    auth.basic:
+      enabled: false
   ingress:
     enabled: true
     hosts:
