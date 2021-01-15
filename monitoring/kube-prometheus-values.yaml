@@ -8,7 +8,7 @@ kubeProxy:
   enabled: false
 
 # Disabled due to missing verticalpodaitoscaler
-kube-state-metrics: 
+kube-state-metrics:
 
 kubeStateMetrics:
   serviceMonitor:
@@ -28,7 +28,7 @@ kubeStateMetrics:
     - sourceLabels: ["system_id"]
       targetLabel: system_id
       regex: '(?:;?)?(.*)'
-      replacement: /minikube/${1}       
+      replacement: /kind/${1}       
 
 ## Define Log Format
 # Use logfmt (default) or json-formatted logging
