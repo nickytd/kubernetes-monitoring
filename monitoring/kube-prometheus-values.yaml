@@ -7,8 +7,10 @@ kubeScheduler:
 kubeProxy:
   enabled: false
 
-# Disabled due to missing verticalpodaitoscaler
 kube-state-metrics:
+  autosharding:
+    enabled: false
+  replicas: 1
 
 kubeStateMetrics:
   serviceMonitor:
@@ -36,14 +38,17 @@ logFormat: logfmt
 
 ## Log level for Alertmanager to be configured with.
 ##
-logLevel: info
+logLevel: debug
 
 prometheus:
   ingress:
     enabled: true
     hosts:
       - prometheus.local
+
   prometheusSpec:
+    shards: 1
+    replicas: 1
     retention: 1d
     externalLabels:
       cluster: /kind
@@ -55,6 +60,13 @@ prometheus:
     podMonitorSelectorNilUsesHelmValues: false
     externalUrl: http://prometheus.local
     configMaps: ['blackbox-targets']
+    resources: 
+      requests:
+        memory: 100Mi
+        cpu: "0.1"
+      limits:
+        memory: 500Mi  
+        cpu: "1"
     additionalScrapeConfigs:
       # config for prometheus-blackbox-exporter, see
       # - https://github.com/coreos/prometheus-operator/blob/master/Documentation/additional-scrape-config.md
