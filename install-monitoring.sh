@@ -35,3 +35,37 @@ echo "processing "$(basename $dashboard)""
 kubectl apply -f $dashboard -n monitoring \
    --dry-run=client -o yaml | kubectl apply -f -
 done
+
+
+for var in "$@"
+do
+    if [[ "$var" = "--with-lb" ]]; then
+      echo "creating kibana LoadBalancer"
+
+      kubectl expose svc/monitoring-kube-prometheus-prometheus \
+        -n monitoring --name prometheus-lb --type=LoadBalancer \
+        --port 9090 --target-port=9090 \
+        --dry-run=client -o yaml | kubectl apply -f -
+
+      kubectl expose svc/monitoring-kube-prometheus-alertmanager \
+        -n monitoring --name alertmanager-lb --type=LoadBalancer \
+        --port 9093 --target-port=9093 \
+        --dry-run=client -o yaml | kubectl apply -f -
+
+      kubectl expose svc/monitoring-grafana \
+        -n monitoring --name grafana-lb --type=LoadBalancer \
+        --port 3000 --target-port=3000 \
+        --dry-run=client -o yaml | kubectl apply -f -    
+
+      kubectl expose svc/blackbox-exporter-prometheus-blackbox-exporter \
+        -n monitoring --name blackbox-exporter-lb --type=LoadBalancer \
+        --port 9115 --target-port=9115 \
+        --dry-run=client -o yaml | kubectl apply -f -  
+
+      kubectl expose svc/karma \
+        -n monitoring --name karma-lb --type=LoadBalancer \
+        --port 8000 --target-port=8000 \
+        --dry-run=client -o yaml | kubectl apply -f -  
+
+    fi  
+done
