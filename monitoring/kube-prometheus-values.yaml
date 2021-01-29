@@ -199,14 +199,14 @@ grafana:
       enabled: true
       label: grafana_dashboard
   adminUser: "admin"
-  adminPassword: "admin"
+  adminPassword: "grafana"
   grafana.ini:
     auth.anonymous:
       enabled: true
       org_name: Local
       org_role: Admin
     auth.basic:
-      enabled: false
+      enabled: true
   ingress:
     enabled: true
     hosts:

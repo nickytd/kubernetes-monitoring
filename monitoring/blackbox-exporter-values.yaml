@@ -10,6 +10,9 @@ config:
       prober: http
       timeout: 10s
       http:
+        valid_status_codes: 
+          - 200
+          - 302
         valid_http_versions:
           - HTTP/1.1
           - HTTP/2.0
