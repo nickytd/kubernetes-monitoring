@@ -10,7 +10,7 @@ controller:
 
     ports:
       http: 80
-      #https: 443
+      https: 443
     
     targetPorts:
       http: http
@@ -26,14 +26,7 @@ controller:
     enabled: false
       
   metrics:
-    port: 10254
-    # if this port is changed, change healthz-port: in extraArgs: accordingly
     enabled: true
-
-    service:
-      annotations: {}
-      # prometheus.io/scrape: "true"
-      # prometheus.io/port: "10254"
     
     serviceMonitor:
       enabled: true
