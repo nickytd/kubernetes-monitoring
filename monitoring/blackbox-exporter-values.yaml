@@ -1,7 +1,7 @@
 ingress:
   enabled: true
   hosts:
-    - blackbox-exporter.dev
+    - blackbox-exporter.develop
 extraArgs:
   - --log.level=info  
 config:
