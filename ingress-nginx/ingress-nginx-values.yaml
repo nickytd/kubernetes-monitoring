@@ -1,0 +1,41 @@
+## nginx configuration
+## Ref: https://github.com/kubernetes/ingress-nginx/blob/master/docs/user-guide/nginx-configuration/index.md
+##
+controller:
+  
+  hostPort:
+    enabled: true
+    enableHttp: true
+    enableHttps: true
+
+    ports:
+      http: 80
+      #https: 443
+    
+    targetPorts:
+      http: http
+      https: https
+  
+  service:
+    type: NodePort
+    nodePorts:
+      http: 32080
+      https: 32443
+
+  admissionWebhooks:
+    enabled: false
+      
+  metrics:
+    port: 10254
+    # if this port is changed, change healthz-port: in extraArgs: accordingly
+    enabled: true
+
+    service:
+      annotations: {}
+      # prometheus.io/scrape: "true"
+      # prometheus.io/port: "10254"
+    
+    serviceMonitor:
+      enabled: true
+      namespaceSelector:
+        any: true

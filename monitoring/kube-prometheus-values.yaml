@@ -44,7 +44,7 @@ prometheus:
   ingress:
     enabled: true
     hosts:
-      - prometheus.dev
+      - prometheus.develop
 
   prometheusSpec:
     shards: 1
@@ -58,7 +58,7 @@ prometheus:
     ruleSelectorNilUsesHelmValues: false
     serviceMonitorSelectorNilUsesHelmValues: false
     podMonitorSelectorNilUsesHelmValues: false
-    externalUrl: http://prometheus.dev
+    externalUrl: http://prometheus.develop
     configMaps: ['blackbox-targets']
     resources: 
       requests:
@@ -133,9 +133,9 @@ alertmanager:
   ingress:
     enabled: true
     hosts:
-      - alertmanager.local
+      - alertmanager.develop
   alertmanagerSpec:
-    externalUrl: http://alertmanager.dev
+    externalUrl: http://alertmanager.develop
 grafana:
   additionalDataSources:
     - name: elk-containers
@@ -192,6 +192,10 @@ grafana:
         gnetId: 7587
         revision: 3
         datasource: Prometheus
+      ingress-nginx:  
+        gnetId: 9614  
+        revision: 1
+        datasource: Prometheus
   plugins:
     - grafana-piechart-panel
   sidecar:
@@ -210,4 +214,4 @@ grafana:
   ingress:
     enabled: true
     hosts:
-      - grafana.dev
+      - grafana.develop

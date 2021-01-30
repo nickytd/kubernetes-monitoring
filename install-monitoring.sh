@@ -68,4 +68,15 @@ do
         --dry-run=client -o yaml | kubectl apply -f -  
 
     fi  
+
+    if [[ "$var" = "--with-ingress-nginx" ]]; then
+      kubectl create namespace ingress-nginx \
+        --dry-run=client -o yaml | kubectl apply -f -
+
+      helm upgrade ingress-nginx ingress-nginx/ingress-nginx \
+        -n ingress-nginx -f $dir/ingress-nginx/ingress-nginx-values.yaml \
+        --install --wait --timeout 15m
+
+    fi  
+
 done

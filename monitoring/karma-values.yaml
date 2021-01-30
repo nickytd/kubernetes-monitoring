@@ -1,7 +1,7 @@
 ingress:
   enabled: true
   hosts:
-    - karma.dev
+    - karma.develop
 service:
   type: ClusterIP
   port: 8000  
