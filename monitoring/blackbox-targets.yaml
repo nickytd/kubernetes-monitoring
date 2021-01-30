@@ -7,31 +7,31 @@ data:
   blackbox-targets.json: |
     [
       { 
-        "targets":["http://monitoring-grafana.monitoring"],
+        "targets":["http://grafana.dev"],
         "labels" :{
             "application": "grafana"
          }
       },
       { 
-        "targets":["http://prometheus-operated.monitoring:9090"],
+        "targets":["http://prometheus.dev"],
         "labels" :{
             "application": "prometheus"
          }
       },
       { 
-        "targets":["http://alertmanager-operated.monitoring:9093"],
+        "targets":["http://alertmanager.dev"],
         "labels" :{
             "application": "alertmanager"
          }
       },
       { 
-        "targets":["http://blackbox-exporter-prometheus-blackbox-exporter.monitoring:9115"],
+        "targets":["http://blackbox-exporter.dev"],
         "labels" :{
             "application": "blackbox-exporter"
          }
       },
       { 
-        "targets":["http://karma.monitoring:8000"],
+        "targets":["http://karma.dev"],
         "labels" :{
             "application": "karma"
          }

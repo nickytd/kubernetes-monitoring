@@ -44,7 +44,7 @@ prometheus:
   ingress:
     enabled: true
     hosts:
-      - prometheus.local
+      - prometheus.dev
 
   prometheusSpec:
     shards: 1
@@ -58,7 +58,7 @@ prometheus:
     ruleSelectorNilUsesHelmValues: false
     serviceMonitorSelectorNilUsesHelmValues: false
     podMonitorSelectorNilUsesHelmValues: false
-    externalUrl: http://prometheus.local
+    externalUrl: http://prometheus.dev
     configMaps: ['blackbox-targets']
     resources: 
       requests:
@@ -135,7 +135,7 @@ alertmanager:
     hosts:
       - alertmanager.local
   alertmanagerSpec:
-    externalUrl: http://alertmanager.local
+    externalUrl: http://alertmanager.dev
 grafana:
   additionalDataSources:
     - name: elk-containers
@@ -210,4 +210,4 @@ grafana:
   ingress:
     enabled: true
     hosts:
-      - grafana.local
+      - grafana.dev
