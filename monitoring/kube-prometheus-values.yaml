@@ -207,8 +207,8 @@ grafana:
   grafana.ini:
     auth.anonymous:
       enabled: true
-      org_name: Local
-      org_role: Admin
+      org_name: "Main Org."
+      org_role: "Admin"
     auth.basic:
       enabled: true
   ingress:
