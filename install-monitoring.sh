@@ -73,8 +73,15 @@ do
       kubectl create namespace ingress-nginx \
         --dry-run=client -o yaml | kubectl apply -f -
 
+      kubectl create secret tls wildcard.develop -n ingress-nginx\
+        --cert=$dir/ingress-nginx/wildcard.develop.crt \
+        --key=$dir/ingress-nginx/wildcard.develop.key \
+        --dry-run=client -o yaml | kubectl apply -f -  
+
+
       helm upgrade ingress-nginx ingress-nginx/ingress-nginx \
         -n ingress-nginx -f $dir/ingress-nginx/ingress-nginx-values.yaml \
+        --set=secret_name="wildcard.develop" \
         --install --wait --timeout 15m
 
     fi  
