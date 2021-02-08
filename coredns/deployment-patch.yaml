@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    k8s-app: kube-dns
+  name: coredns
+spec:
+  template:
+    spec:
+      volumes:
+        - name: config-volume   
+          configMap:
+            name: coredns
+            defaultMode: 420
+            items:
+            - key: Corefile
+              path: Corefile
+            - key: develop.hosts
+              path: develop.hosts

@@ -1,0 +1,14 @@
+##
+# Host Database
+# to be inlinged with coredns config in minikube cluster
+#
+minikube_ip kibana.develop
+minikube_ip es.develop
+minikube_ip prometheus.develop
+minikube_ip alertmanager.develop
+minikube_ip grafana.develop
+minikube_ip karma.develop
+minikube_ip blackbox-exporter.develop
+minikube_ip kiali.develop
+minikube_ip tracing.develop
+minikube_ip kubernetes-dashboard.develop
