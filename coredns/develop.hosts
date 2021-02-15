@@ -1,0 +1,15 @@
+##
+# Host Database
+# to be inlinged with coredns config in minikube cluster
+#
+172.16.193.2 kibana.develop
+172.16.193.2 es.develop
+172.16.193.2 prometheus.develop
+172.16.193.2 alertmanager.develop
+172.16.193.2 grafana.develop
+172.16.193.2 karma.develop
+172.16.193.2 blackbox-exporter.develop
+172.16.193.2 kiali.develop
+172.16.193.2 tracing.develop
+172.16.193.2 kubernetes-dashboard.develop
+172.16.193.2 thanos.develop

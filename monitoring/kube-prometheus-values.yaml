@@ -45,8 +45,23 @@ prometheus:
     enabled: true
     hosts:
       - prometheus.develop
-
+  thanosService:
+    enabled: true
+  thanosIngress:
+    enabled: true
+    hosts:
+      - thanos.develop
+    tls:
+      - hosts:
+          - thanos.develop        
+    annotations:
+      nginx.ingress.kubernetes.io/backend-protocol: "GRPC"     
+      nginx.ingress.kubernetes.io/grpc-backend: "true" 
   prometheusSpec:
+    ### Thanos
+    thanos:
+      version: v0.18.0
+      logLevel: debug
     shards: 1
     replicas: 1
     retention: 1d
@@ -195,7 +210,7 @@ grafana:
       ingress-nginx:  
         gnetId: 9614  
         revision: 1
-        datasource: Prometheus
+        datasource: Prometheus      
   plugins:
     - grafana-piechart-panel
   sidecar:
@@ -215,3 +230,5 @@ grafana:
     enabled: true
     hosts:
       - grafana.develop
+
+

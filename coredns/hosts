@@ -12,3 +12,4 @@ minikube_ip blackbox-exporter.develop
 minikube_ip kiali.develop
 minikube_ip tracing.develop
 minikube_ip kubernetes-dashboard.develop
+minikube_ip thanos.develop
