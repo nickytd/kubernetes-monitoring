@@ -1,0 +1,24 @@
+[ req ]
+default_bits       = 2048
+distinguished_name = dn
+req_extensions     = req_ext
+prompt = no
+[ dn ]
+C = US
+O = Develop Inc
+CN = *.develop
+[ req_ext ]
+subjectAltName = @alt_names
+[alt_names]
+IP.1	= minikube_ip
+IP.2	= minikube_ip
+IP.3	= minikube_ip
+IP.4	= minikube_ip
+IP.5	= minikube_ip
+IP.6	= minikube_ip
+DNS.1   = prometheus.develop
+DNS.2   = alertmanager.develop
+DNS.3   = thanos.develop
+DNS.4   = grafana.develop
+DNS.5   = karma.develop
+DNS.6   = blackbox-exporter.develop

@@ -53,7 +53,8 @@ prometheus:
       - thanos.develop
     tls:
       - hosts:
-          - thanos.develop        
+          - thanos.develop 
+        secretName: thanos-tls
     annotations:
       nginx.ingress.kubernetes.io/backend-protocol: "GRPC"     
       nginx.ingress.kubernetes.io/grpc-backend: "true" 
