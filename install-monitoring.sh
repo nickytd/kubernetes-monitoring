@@ -10,11 +10,11 @@ echo "options: --with-blackbox-exporter --with-karma --with-lb --with-ingress-ng
 kubectl create namespace monitoring \
   --dry-run=client -o yaml | kubectl apply -f -
 
-certs=("thanos")
+certs=("thanos" "prometheus" "alertmanager" "karma" "blackbox-exporter" "grafana")
 for c in ${certs[@]}; do
   kubectl create secret tls "$c-tls" -n monitoring \
-    --cert=$dir/ingress-nginx/wildcard.develop.crt \
-    --key=$dir/ingress-nginx/wildcard.develop.key \
+    --cert=$dir/ingress-nginx/wildcard.local.dev.crt \
+    --key=$dir/ingress-nginx/wildcard.local.dev.key \
     --dry-run=client -o yaml | kubectl apply -f - 
 done  
 
@@ -90,16 +90,10 @@ do
     if [[ "$var" = "--with-ingress-nginx" ]]; then
       kubectl create namespace ingress-nginx \
         --dry-run=client -o yaml | kubectl apply -f -
-
-      kubectl create secret tls wildcard.develop -n ingress-nginx\
-        --cert=$dir/ingress-nginx/wildcard.develop.crt \
-        --key=$dir/ingress-nginx/wildcard.develop.key \
-        --dry-run=client -o yaml | kubectl apply -f -  
-
-
+      
       helm upgrade ingress-nginx ingress-nginx/ingress-nginx \
         -n ingress-nginx -f $dir/ingress-nginx/ingress-nginx-values.yaml \
-        --set=secret_name="wildcard.develop" \
+        --set=secret_name="wildcard.local.dev" \
         --install --wait --timeout 15m
 
     fi  

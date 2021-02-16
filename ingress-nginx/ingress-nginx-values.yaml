@@ -3,8 +3,8 @@
 ##
 controller:
 
-  extraArgs:
-    default-ssl-certificate: ingress-nginx/wildcard.develop
+  #extraArgs:
+  #  default-ssl-certificate: ingress-nginx/wildcard.develop
   
   hostPort:
     enabled: true

@@ -104,7 +104,7 @@ spec:
           items:
           - key: Corefile
             path: Corefile
-          - key: develop.hosts
-            path: develop.hosts
+          - key: local.dev.hosts
+            path: local.dev.hosts
           name: coredns
         name: config-volume

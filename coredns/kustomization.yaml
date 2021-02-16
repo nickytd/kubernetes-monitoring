@@ -15,7 +15,7 @@ configMapGenerator:
   namespace: kube-system
   behavior: merge
   files:
-  - develop.hosts
+  - local.dev.hosts
 
 patchesStrategicMerge:
 - deployment-patch.yaml

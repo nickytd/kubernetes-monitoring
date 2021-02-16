@@ -38,43 +38,41 @@ logFormat: logfmt
 
 ## Log level for Alertmanager to be configured with.
 ##
-logLevel: debug
+logLevel: info
 
 prometheus:
   ingress:
     enabled: true
     hosts:
-      - prometheus.develop
+      - prometheus.local.dev
+    tls:  
+    - secretName: prometheus-tls
+      hosts:
+         - prometheus.local.dev
+    annotations:
+      nginx.ingress.kubernetes.io/ssl-redirect: "true"
+      nginx.ingress.kubernetes.io/rewrite-target: "/"         
   thanosService:
     enabled: true
   thanosIngress:
-    enabled: true
-    hosts:
-      - thanos.develop
-    tls:
-      - hosts:
-          - thanos.develop 
-        secretName: thanos-tls
-    annotations:
-      nginx.ingress.kubernetes.io/backend-protocol: "GRPC"     
-      nginx.ingress.kubernetes.io/grpc-backend: "true" 
+    enabled: false    
   prometheusSpec:
     ### Thanos
     thanos:
       version: v0.18.0
-      logLevel: debug
+      logLevel: info
     shards: 1
     replicas: 1
     retention: 1d
     externalLabels:
-      cluster: /kind
+      cluster: /develop-01
     ruleSelector: {}
     serviceMonitorSelector: {}
     podMonitorSelector: {}
     ruleSelectorNilUsesHelmValues: false
     serviceMonitorSelectorNilUsesHelmValues: false
     podMonitorSelectorNilUsesHelmValues: false
-    externalUrl: http://prometheus.develop
+    externalUrl: http://prometheus.local.dev
     configMaps: ['blackbox-targets']
     resources: 
       requests:
@@ -149,9 +147,13 @@ alertmanager:
   ingress:
     enabled: true
     hosts:
-      - alertmanager.develop
+      - alertmanager.local.dev
+    tls:
+    - secretName: alertmanager-tls
+      hosts:
+        - alertmanager.local.dev  
   alertmanagerSpec:
-    externalUrl: http://alertmanager.develop
+    externalUrl: http://alertmanager.local.dev
 grafana:
   additionalDataSources:
     - name: elk-containers
@@ -230,6 +232,10 @@ grafana:
   ingress:
     enabled: true
     hosts:
-      - grafana.develop
+      - grafana.local.dev
+    tls:
+      - secretName: grafana-tls
+        hosts:
+          - grafana.local.dev  
 
 

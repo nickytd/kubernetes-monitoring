@@ -17,7 +17,7 @@ data:
            ttl 30
         }
         prometheus :9153
-        hosts /etc/coredns/develop.hosts develop {
+        hosts /etc/coredns/local.dev.hosts local.dev {
           fallthrough
         }
         forward . /etc/resolv.conf {

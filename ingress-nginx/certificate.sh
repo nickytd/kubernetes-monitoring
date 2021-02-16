@@ -6,7 +6,7 @@ dir=$(dirname $0)
 domain=$1
 
 if [[ -z $domain ]]; then
-	domain="develop"
+	domain="local.dev"
 fi
 
 echo "apply minikube ip patch"

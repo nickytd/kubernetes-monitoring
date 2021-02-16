@@ -14,7 +14,7 @@ if [ -z $IP ]; then
 fi
 
 
-sed "s/minikube_ip/$IP/g" hosts > develop.hosts
+sed "s/minikube_ip/$IP/g" hosts > local.dev.hosts
 
 kubectl apply -k . --dry-run=client -o yaml | \
   kubectl apply -f -

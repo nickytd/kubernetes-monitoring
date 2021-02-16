@@ -6,7 +6,6 @@ prompt = no
 [ dn ]
 C = US
 O = Develop Inc
-CN = *.develop
 [ req_ext ]
 subjectAltName = @alt_names
 [alt_names]
@@ -16,9 +15,11 @@ IP.3	= minikube_ip
 IP.4	= minikube_ip
 IP.5	= minikube_ip
 IP.6	= minikube_ip
-DNS.1   = prometheus.develop
-DNS.2   = alertmanager.develop
-DNS.3   = thanos.develop
-DNS.4   = grafana.develop
-DNS.5   = karma.develop
-DNS.6   = blackbox-exporter.develop
+IP.6	= minikube_ip
+DNS.1   = prometheus.local.dev
+DNS.2   = alertmanager.local.dev
+DNS.3   = thanos.local.dev
+DNS.4   = grafana.local.dev
+DNS.5   = karma.local.dev
+DNS.6   = blackbox-exporter.local.dev
+DNS.7	= develop
