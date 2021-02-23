@@ -35,7 +35,6 @@ done
 
 for var in "$@"
 do
-
     if [[ "$var" = "--with-karma" ]]; then
       helm upgrade karma -n monitoring \
         -f $dir/monitoring/karma-values.yaml stable/karma \
@@ -93,7 +92,6 @@ do
       
       helm upgrade ingress-nginx ingress-nginx/ingress-nginx \
         -n ingress-nginx -f $dir/ingress-nginx/ingress-nginx-values.yaml \
-        --set=secret_name="wildcard.local.dev" \
         --install --wait --timeout 15m
 
     fi  
