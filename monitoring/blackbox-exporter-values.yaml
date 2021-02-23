@@ -3,9 +3,9 @@ ingress:
   hosts:
     - blackbox-exporter.local.dev
   tls:
-    - secretName: blackbox-exporter-tls
-      hosts:
-         - blackbox-exporter.local.dev
+    - hosts:
+        - blackbox-exporter.local.dev
+      secretName: blackbox-exporter-tls  
 extraArgs:
   - --log.level=info  
 config:

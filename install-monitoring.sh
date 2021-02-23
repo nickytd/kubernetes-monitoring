@@ -10,7 +10,7 @@ echo "options: --with-blackbox-exporter --with-karma --with-lb --with-ingress-ng
 kubectl create namespace monitoring \
   --dry-run=client -o yaml | kubectl apply -f -
 
-certs=("thanos" "prometheus" "alertmanager" "karma" "blackbox-exporter" "grafana")
+certs=("prometheus" "alertmanager" "karma" "blackbox-exporter" "grafana")
 for c in ${certs[@]}; do
   kubectl create secret tls "$c-tls" -n monitoring \
     --cert=$dir/ingress-nginx/wildcard.local.dev.crt \
