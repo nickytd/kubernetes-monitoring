@@ -1,11 +1,7 @@
 ingress:
   enabled: true
   hosts:
-    - karma.local.dev
-  tls:
-    - hosts:
-        - karma.local.dev
-      secretName: karma-tls  
+    - karma.local.dev 
 service:
   type: ClusterIP
   port: 8000

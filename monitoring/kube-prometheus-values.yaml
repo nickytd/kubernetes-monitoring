@@ -32,23 +32,15 @@ kubeStateMetrics:
       regex: '(?:;?)?(.*)'
       replacement: /develop-01/${1}       
 
-## Define Log Format
-# Use logfmt (default) or json-formatted logging
-logFormat: logfmt
-
-## Log level for Alertmanager to be configured with.
-##
+## Define Log Format & Log level
 logLevel: info
+logFormat: logfmt
 
 prometheus:
   ingress:
     enabled: true
     hosts:
-      - prometheus.local.dev
-    tls:  
-    - secretName: prometheus-tls
-      hosts:
-         - prometheus.local.dev
+      - prometheus.local.dev    
     annotations:
       nginx.ingress.kubernetes.io/ssl-redirect: "true"
       nginx.ingress.kubernetes.io/rewrite-target: "/"         
@@ -233,9 +225,3 @@ grafana:
     enabled: true
     hosts:
       - grafana.local.dev
-    tls:
-      - secretName: grafana-tls
-        hosts:
-          - grafana.local.dev  
-
-

@@ -1,11 +1,7 @@
 ingress:
   enabled: true
   hosts:
-    - blackbox-exporter.local.dev
-  tls:
-    - hosts:
-        - blackbox-exporter.local.dev
-      secretName: blackbox-exporter-tls  
+    - blackbox-exporter.local.dev  
 extraArgs:
   - --log.level=info  
 config:
