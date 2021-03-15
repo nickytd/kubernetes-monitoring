@@ -3,3 +3,4 @@
 *.csr
 *.pem
 *.cnf
+ssl/

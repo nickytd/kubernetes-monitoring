@@ -12,30 +12,10 @@ kube-state-metrics:
     enabled: false
   replicas: 1
 
-kubeStateMetrics:
-  serviceMonitor:
-    metricRelabelings:
-    - separator: ;
-      regex: label_(.+)
-      replacement: $1
-      action: labelmap
-    - separator: ;
-      regex: label_(.+)
-      action: labeldrop
-    - sourceLabels: ["system_id","namespace"]
-      separator: ;
-      targetLabel: system_id
-      regex: '([a-zA-Z0-9._-]*)|(?:;)([a-zA-Z0-9._-]*)'
-      replacement: ${0}
-    - sourceLabels: ["system_id"]
-      targetLabel: system_id
-      regex: '(?:;?)?(.*)'
-      replacement: /develop-01/${1}       
-
-## Define Log Format & Log level
-logLevel: info
-logFormat: logfmt
-
+prometheusOperator:
+  logFormat: json
+  logLevel: warn  
+   
 prometheus:
   ingress:
     enabled: true
@@ -43,12 +23,18 @@ prometheus:
       - prometheus.local.dev    
     annotations:
       nginx.ingress.kubernetes.io/ssl-redirect: "true"
-      nginx.ingress.kubernetes.io/rewrite-target: "/"         
+      nginx.ingress.kubernetes.io/rewrite-target: "/"
+    tls:
+    - hosts:  
+        - prometheus.local.dev
+      secretName: prometheus-tls   
   thanosService:
     enabled: true
   thanosIngress:
     enabled: false    
   prometheusSpec:
+    logLevel: warn
+    logFormat: json
     ### Thanos
     thanos:
       version: v0.18.0
@@ -64,7 +50,7 @@ prometheus:
     ruleSelectorNilUsesHelmValues: false
     serviceMonitorSelectorNilUsesHelmValues: false
     podMonitorSelectorNilUsesHelmValues: false
-    externalUrl: http://prometheus.local.dev
+    externalUrl: https://prometheus.local.dev
     configMaps: ['blackbox-targets']
     resources: 
       requests:
@@ -73,6 +59,23 @@ prometheus:
       limits:
         memory: 500Mi  
         cpu: "1"
+    additionalAlertRelabelConfigs:
+    - separator: ;
+      regex: label_(.+)
+      replacement: $1
+      action: labelmap
+    - separator: ;
+      regex: label_(.+)
+      action: labeldrop
+    - source_labels: ["system_id","namespace"]
+      separator: ;
+      target_label: system_id
+      regex: '([a-zA-Z0-9._-]*)|(?:;)([a-zA-Z0-9._-]*)'
+      replacement: ${0}
+    - source_labels: ["system_id"]
+      target_label: system_id
+      regex: '(?:;?)?(.*)'
+      replacement: /develop-01/${1}    
     additionalScrapeConfigs:
       # config for prometheus-blackbox-exporter, see
       # - https://github.com/coreos/prometheus-operator/blob/master/Documentation/additional-scrape-config.md
@@ -114,10 +117,13 @@ prometheus:
           target_label: kubernetes_namespace
         - source_labels: [__meta_kubernetes_pod_name]
           action: replace
-          target_label: kubernetes_pod_name      
+          target_label: kubernetes_pod_name   
+
+
 prometheus-node-exporter:
   extraArgs:
-  - --log.level=info
+  - --log.level=warn
+  - --log.format=json
   - --collector.systemd
   - --collector.processes
   - --collector.systemd.unit-whitelist=(docker|kubelet|containerd).service
@@ -135,18 +141,32 @@ prometheus-node-exporter:
     requests:
       cpu: 25m
       memory: 100Mi    
+
+
 alertmanager:
   ingress:
     enabled: true
     hosts:
       - alertmanager.local.dev
     tls:
-    - secretName: alertmanager-tls
-      hosts:
-        - alertmanager.local.dev  
+    - hosts:
+        - alertmanager.local.dev    
+      secretName: alertmanager-tls      
   alertmanagerSpec:
-    externalUrl: http://alertmanager.local.dev
+    logFormat: json
+    logLevel: warn 
+    externalUrl: https://alertmanager.local.dev
+
+
 grafana:
+  ingress:
+    enabled: true
+    hosts:
+      - grafana.local.dev
+    tls:
+    - hosts:  
+        - grafana.local.dev
+      secretName: grafana-tls
   additionalDataSources:
     - name: elk-containers
       type: elasticsearch
@@ -215,13 +235,12 @@ grafana:
   adminUser: "admin"
   adminPassword: "grafana"
   grafana.ini:
+    log:
+      level: warn
+      format: json
     auth.anonymous:
       enabled: true
       org_name: "Main Org."
       org_role: "Admin"
     auth.basic:
       enabled: true
-  ingress:
-    enabled: true
-    hosts:
-      - grafana.local.dev

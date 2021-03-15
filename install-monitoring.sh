@@ -5,18 +5,21 @@ set -eo pipefail
 dir=$(dirname $0)
 
 echo "setting up monitoring stack"
-echo "options: --with-blackbox-exporter --with-karma --with-lb --with-ingress-nginx"
+echo "options: --with-blackbox-exporter --with-karma --with-lb"
 
 kubectl create namespace monitoring \
   --dry-run=client -o yaml | kubectl apply -f -
 
-certs=("prometheus" "alertmanager" "karma" "blackbox-exporter" "grafana")
-for c in ${certs[@]}; do
-  kubectl create secret tls "$c-tls" -n monitoring \
-    --cert=$dir/ingress-nginx/wildcard.local.dev.crt \
-    --key=$dir/ingress-nginx/wildcard.local.dev.key \
-    --dry-run=client -o yaml | kubectl apply -f - 
-done  
+if [ -d $dir/ssl ]; then
+
+  certs=("prometheus" "alertmanager" "grafana")
+  for c in ${certs[@]}; do
+    kubectl create secret tls "$c-tls" -n monitoring \
+      --cert=$dir/ssl/wildcard.crt \
+      --key=$dir/ssl/wildcard.key \
+      --dry-run=client -o yaml | kubectl apply -f - 
+  done 
+fi 
 
 helm upgrade monitoring -n monitoring \
    -f $dir/monitoring/kube-prometheus-values.yaml prometheus-community/kube-prometheus-stack \
@@ -36,6 +39,14 @@ done
 for var in "$@"
 do
     if [[ "$var" = "--with-karma" ]]; then
+  
+      if [ -d $dir/ssl ]; then
+        kubectl create secret tls "karma-tls" -n monitoring \
+          --cert=$dir/ssl/wildcard.crt \
+          --key=$dir/ssl/wildcard.key \
+          --dry-run=client -o yaml | kubectl apply -f - 
+      fi  
+
       helm upgrade karma -n monitoring \
         -f $dir/monitoring/karma-values.yaml stable/karma \
         --install --wait --timeout 15m
@@ -45,6 +56,14 @@ do
     if [[ "$var" = "--with-blackbox-exporter" ]]; then 
 
       echo "creating blackbox-exporter"
+
+      if [ -d $dir/ssl ]; then
+        kubectl create secret tls "blackbox-exporter-tls" -n monitoring \
+          --cert=$dir/ssl/wildcard.crt \
+          --key=$dir/ssl/wildcard.key \
+          --dry-run=client -o yaml | kubectl apply -f - 
+      fi    
+
       kubectl apply -f $dir/monitoring/blackbox-targets.yaml -n monitoring \
         --dry-run=client -o yaml | kubectl apply -f -
       
@@ -84,16 +103,6 @@ do
         --port 8000 --target-port=8000 \
         --dry-run=client -o yaml | kubectl apply -f -  
 
-    fi  
-
-    if [[ "$var" = "--with-ingress-nginx" ]]; then
-      kubectl create namespace ingress-nginx \
-        --dry-run=client -o yaml | kubectl apply -f -
-      
-      helm upgrade ingress-nginx ingress-nginx/ingress-nginx \
-        -n ingress-nginx -f $dir/ingress-nginx/ingress-nginx-values.yaml \
-        --install --wait --timeout 15m
-
-    fi  
+    fi    
 
 done

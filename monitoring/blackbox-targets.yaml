@@ -7,31 +7,31 @@ data:
   blackbox-targets.json: |
     [
       { 
-        "targets":["http://grafana.local.dev"],
+        "targets":["https://grafana.local.dev"],
         "labels" :{
             "application": "grafana"
          }
       },
       { 
-        "targets":["http://prometheus.local.dev"],
+        "targets":["https://prometheus.local.dev"],
         "labels" :{
             "application": "prometheus"
          }
       },
       { 
-        "targets":["http://alertmanager.local.dev"],
+        "targets":["https://alertmanager.local.dev"],
         "labels" :{
             "application": "alertmanager"
          }
       },
       { 
-        "targets":["http://blackbox-exporter.local.dev"],
+        "targets":["https://blackbox-exporter.local.dev"],
         "labels" :{
             "application": "blackbox-exporter"
          }
       },
       { 
-        "targets":["http://karma.local.dev"],
+        "targets":["https://karma.local.dev"],
         "labels" :{
             "application": "karma"
          }

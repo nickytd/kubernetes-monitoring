@@ -3,7 +3,8 @@ ingress:
   hosts:
     - blackbox-exporter.local.dev  
 extraArgs:
-  - --log.level=info  
+  - --log.level=info
+  - --log.format=json
 config:
   modules:
     http_2xx:
@@ -20,14 +21,3 @@ config:
         ip_protocol_fallback: true
         tls_config:
           insecure_skip_verify: true
-    tcp_connect:
-      prober: tcp
-      tcp:    
-        preferred_ip_protocol: ip4
-        query_response:
-          - send: "GET / HTTP/1.1"
-          - send: "Host: blackbox-exporter"
-          - send: "\n"
-          - send: "\n"
-          - expect: "HTTP/1.1 302 Found"
-         
