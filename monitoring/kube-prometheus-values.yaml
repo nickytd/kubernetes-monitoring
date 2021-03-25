@@ -126,7 +126,7 @@ prometheus-node-exporter:
   - --log.format=json
   - --collector.systemd
   - --collector.processes
-  - --collector.systemd.unit-whitelist=(docker|kubelet|containerd).service
+  - --collector.systemd.unit-include=(docker|kubelet|containerd).service
   - --collector.filesystem.ignored-mount-points=^/(dev|proc|sys|.*var/lib/docker/.+|.*var/lib/kubelet/.+)($|/)
   - --collector.filesystem.ignored-fs-types=^(autofs|binfmt_misc|cgroup|configfs|debugfs|devpts|devtmpfs|fusectl|hugetlbfs|mqueue|overlay|proc|procfs|pstore|rpc_pipefs|securityfs|sysfs|tracefs|netfs)$
   extraHostVolumeMounts:
