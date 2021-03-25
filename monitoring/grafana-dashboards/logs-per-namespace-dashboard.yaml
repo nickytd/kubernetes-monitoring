@@ -38,7 +38,7 @@ data:
             "title":"Kibana Container Logs Dashboard",
             "tooltip":"Kibana Container Logs Dashboard",
             "type":"link",
-            "url":"https://kibana/app/kibana?security_tenant=global#/dashboard/9419fb30-547c-11ea-ac0b-5b9ac52105c7?_g=(refreshInterval%3A(pause%3A!t%2Cvalue%3A0)%2Ctime%3A(from%3Anow-15m,to%3Anow))"
+            "url":"https://kibana.local.dev/app/kibana?security_tenant=global#/dashboard/9419fb30-547c-11ea-ac0b-5b9ac52105c7?_g=(refreshInterval%3A(pause%3A!t%2Cvalue%3A0)%2Ctime%3A(from%3Anow-15m,to%3Anow))"
          }
       ],
       "panels":[
@@ -410,7 +410,7 @@ data:
                {
                   "targetBlank":true,
                   "title":"Kibana Logs",
-                  "url":"https://kibana/app/kibana#/discover?_g=()&_a=(columns:!(message),index:containers,interval:auto,query:(language:kuery,query:''),sort:!(!('@timestamp',desc)))"
+                  "url":"https://kibana.local.dev/app/kibana#/discover?_g=()&_a=(columns:!(message),index:containers,interval:auto,query:(language:kuery,query:''),sort:!(!('@timestamp',desc)))"
                }
             ],
             "options":{
@@ -552,5 +552,5 @@ data:
       "timezone":"",
       "title":"Logs per Namespace",
       "uid":"k8s-logs-per-namespace-v2",
-      "version":1
+      "version":2
     }
