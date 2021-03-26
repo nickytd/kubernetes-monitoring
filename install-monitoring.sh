@@ -62,17 +62,10 @@ do
           --cert=$dir/ssl/wildcard.crt \
           --key=$dir/ssl/wildcard.key \
           --dry-run=client -o yaml | kubectl apply -f - 
-      fi    
-
-      kubectl apply -f $dir/monitoring/blackbox-targets.yaml -n monitoring \
-        --dry-run=client -o yaml | kubectl apply -f -
-      
+      fi        
       helm upgrade blackbox-exporter -n monitoring  \
         -f $dir/monitoring/blackbox-exporter-values.yaml prometheus-community/prometheus-blackbox-exporter \
         --install --wait --timeout 15m
-
-      kubectl apply -f $dir/monitoring/blackbox-rules.yaml -n monitoring \
-        --dry-run=client -o yaml | kubectl apply -f -   
     fi
 
     if [[ "$var" = "--with-lb" ]]; then

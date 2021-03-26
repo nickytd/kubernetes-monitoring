@@ -5,6 +5,62 @@ ingress:
 extraArgs:
   - --log.level=info
   - --log.format=json
+serviceMonitor:
+  enabled: true
+  defaults:
+    interval: 30s
+    scrapeTimeout: 30s
+    module: http_2xx
+  tlsConfig:
+    ca:
+      secret: 
+        name: blackbox-exporter-tls
+        key: tls.crt
+  targets:
+    - name: grafana
+      url: https://grafana.local.dev
+      labels:
+        application: grafana
+    - name: prometheus
+      url: https://prometheus.local.dev
+      labels:
+        application: prometheus
+    - name: alertmanager
+      url: https://alertmanager.local.dev
+      labels:
+        application: alertmanager
+
+prometheusRule:
+  enabled: true
+  namespace: "monitoring"
+  rules:
+    - alert: UrlDown
+      expr: probe_success == 0
+      for: 1m
+      labels:
+        severity: critical
+        alertgroup: UrlMonitoring
+      annotations:
+        summary: 'URL is not reachable for over 1 minute.'
+    # This alert should be inhibited by UrlDown in the Alertmanager config.
+    # Right now, prometheus-operator doesn't allow it to be configured together with the alert.
+    - alert: HighDowntime
+      expr: avg_over_time(probe_success[15m]) < 0.75
+      for: 10m
+      labels:
+        severity: critical
+        alertgroup: UrlMonitoring
+      annotations:
+        summary: 'URL has under 75% uptime for the past 10 minutes.'
+    - alert: CertExpiringSoon
+      expr: floor((probe_ssl_earliest_cert_expiry - time()) / 86400) < 25
+      for: 1m
+      labels:
+        severity: critical
+        alertgroup: CertExpiryMonitoring
+      annotations:
+        summary: 'Certificate expires soon'
+        
 config:
   modules:
     http_2xx:

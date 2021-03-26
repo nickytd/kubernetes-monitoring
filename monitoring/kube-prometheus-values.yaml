@@ -51,7 +51,6 @@ prometheus:
     serviceMonitorSelectorNilUsesHelmValues: false
     podMonitorSelectorNilUsesHelmValues: false
     externalUrl: https://prometheus.local.dev
-    configMaps: ['blackbox-targets']
     resources: 
       requests:
         memory: 100Mi
@@ -76,23 +75,7 @@ prometheus:
       target_label: system_id
       regex: '(?:;?)?(.*)'
       replacement: /develop-01/${1}    
-    additionalScrapeConfigs:
-      # config for prometheus-blackbox-exporter, see
-      # - https://github.com/coreos/prometheus-operator/blob/master/Documentation/additional-scrape-config.md
-      # - https://github.com/coreos/prometheus-operator/issues/256#issuecomment-470600179
-      - job_name: blackbox-monitoring
-        metrics_path: /probe
-        params:
-          module: [http_2xx]
-        file_sd_configs:
-        - files: ['/etc/prometheus/configmaps/blackbox-targets/blackbox-targets.json']
-        relabel_configs:
-        - source_labels: [__address__]
-          target_label: __param_target
-        - source_labels: [__param_target]
-          target_label: instance
-        - target_label: __address__
-          replacement: blackbox-exporter-prometheus-blackbox-exporter:9115
+    additionalScrapeConfigs:      
       # additional configs for pod annotations
       - job_name: 'kubernetes-pods'
         kubernetes_sd_configs:
@@ -118,7 +101,6 @@ prometheus:
         - source_labels: [__meta_kubernetes_pod_name]
           action: replace
           target_label: kubernetes_pod_name   
-
 
 prometheus-node-exporter:
   extraArgs:
