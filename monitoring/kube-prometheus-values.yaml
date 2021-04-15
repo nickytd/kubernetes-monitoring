@@ -37,8 +37,10 @@ prometheus:
     logFormat: json
     ### Thanos
     thanos:
-      version: v0.18.0
+      version: v0.19.0
       logLevel: info
+      logFormat: json
+      listenLocal: true
     shards: 1
     replicas: 1
     retention: 1d
