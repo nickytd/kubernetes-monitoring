@@ -40,7 +40,7 @@ prometheus:
       version: v0.19.0
       logLevel: info
       logFormat: json
-      listenLocal: true
+      listenLocal: false
     shards: 1
     replicas: 1
     retention: 1d
