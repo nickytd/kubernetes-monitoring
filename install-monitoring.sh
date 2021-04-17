@@ -5,7 +5,7 @@ set -eo pipefail
 dir=$(dirname $0)
 
 echo "setting up monitoring stack"
-echo "options: --with-blackbox-exporter --with-karma --with-lb"
+echo "options: --with-blackbox-exporter --with-karma --with-thanos --with-lb"
 
 kubectl create namespace monitoring \
   --dry-run=client -o yaml | kubectl apply -f -
@@ -97,5 +97,21 @@ do
         --dry-run=client -o yaml | kubectl apply -f -  
 
     fi    
+
+    if [[ "$var" = "--with-thanos" ]]; then 
+
+        echo "creating thanos"
+        if [ -d $dir/ssl ]; then
+          kubectl create secret tls thanos.local.dev-tls -n monitoring \
+            --cert=$dir/ssl/wildcard.crt \
+            --key=$dir/ssl/wildcard.key \
+            --dry-run=client -o yaml | kubectl apply -f -
+        fi    
+
+        helm upgrade thanos -n monitoring  \
+        -f $dir/monitoring/thanos-values.yaml bitnami/thanos \
+        --install --wait --timeout 15m  
+
+    fi
 
 done

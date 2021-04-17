@@ -38,14 +38,14 @@ prometheus:
     ### Thanos
     thanos:
       version: v0.19.0
-      logLevel: info
+      logLevel: warn
       logFormat: json
       listenLocal: false
     shards: 1
     replicas: 1
     retention: 1d
     externalLabels:
-      cluster: /develop-01
+      cluster: /minikube
     ruleSelector: {}
     serviceMonitorSelector: {}
     podMonitorSelector: {}
