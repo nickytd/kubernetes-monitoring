@@ -209,7 +209,11 @@ grafana:
       ingress-nginx:  
         gnetId: 9614  
         revision: 1
-        datasource: Prometheus      
+        datasource: Prometheus  
+      elasticsearch-exporter:
+        gnetId: 2322
+        revision: 4
+        datasource: Prometheus
   plugins:
     - grafana-piechart-panel
   sidecar:
