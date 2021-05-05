@@ -20,10 +20,8 @@ prometheus:
   ingress:
     enabled: true
     hosts:
-      - prometheus.local.dev    
-    annotations:
-      nginx.ingress.kubernetes.io/ssl-redirect: "true"
-      nginx.ingress.kubernetes.io/rewrite-target: "/"
+      - prometheus.local.dev   
+    pathType: Prefix   
     tls:
     - hosts:  
         - prometheus.local.dev
@@ -37,7 +35,7 @@ prometheus:
     logFormat: json
     ### Thanos
     thanos:
-      version: v0.19.0
+      version: v0.20.1
       logLevel: warn
       logFormat: json
       listenLocal: false
@@ -132,6 +130,7 @@ alertmanager:
     enabled: true
     hosts:
       - alertmanager.local.dev
+    pathType: Prefix
     tls:
     - hosts:
         - alertmanager.local.dev    
@@ -147,6 +146,7 @@ grafana:
     enabled: true
     hosts:
       - grafana.local.dev
+    pathType: Prefix  
     tls:
     - hosts:  
         - grafana.local.dev

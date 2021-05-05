@@ -5,7 +5,7 @@ set -eo pipefail
 dir=$(dirname $0)
 
 echo "setting up monitoring stack"
-echo "options: --with-blackbox-exporter --with-karma --with-thanos --with-lb"
+echo "options: --with-blackbox-exporter --with-karma --with-thanos"
 
 kubectl create namespace monitoring \
   --dry-run=client -o yaml | kubectl apply -f -
