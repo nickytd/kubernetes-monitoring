@@ -276,20 +276,20 @@ query:
     # TLS server side
     server:
       # enable TLS for GRPC server
-      secure: false
+      secure: true
       # TLS Certificate for gRPC server, leave blank to disable TLS
-      cert:
+      cert: 
       # TLS Key for the gRPC server, leave blank to disable TLS
       key:
       # TLS CA to verify clients against. If no client CA is specified, there is no client verification on server side. (tls.NoClientCert)
       ca:
       # Existing secret containing your own TLS certificates.
-      # existingSecret:
-      #   name:
-      #   keyMapping:
-      #     ca-cert: ca.pem
-      #     tls-cert: cert.pem
-      #     tls-key: key.pem
+      existingSecret:
+        name: thanos-auth
+        keyMapping:
+          ca-cert: ca.crt
+          tls-cert: tls.crt
+          tls-key: tls.key
 
     # TLS client side
     client:
