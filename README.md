@@ -25,4 +25,4 @@ By default the external domain names for the deployed applications is ```local.d
 For local development the [mkcert](https://github.com/FiloSottile/mkcert) is simple way to generate those certificates. Place create "ssl" directory and place the certificates there. Thanos query example depends on client certificate which also can be generated with mkcert tool. 
 Check the [setup.sh](/setup.sh) for the expected structure and naming of the certificate files.
 
-To resolve those URL in local browser add them to ```/etc/hosts``` or use local dns service resolver. To support the names within a minikube cluster the configuration of coredns should be enhanced. Here is an example for patching [in-cluster coredns](https://github.com/kubernetes-coredns-patch) in minikube
+To resolve those URL in local browser add them to ```/etc/hosts``` or use local dns service resolver. To support the names within a minikube cluster the configuration of coredns should be enhanced. Here is an example for patching [in-cluster coredns](https://github.com/nickytd/kubernetes-coredns-patch) in minikube
