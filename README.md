@@ -17,6 +17,7 @@ This project depends on following helm repositories which need to be added befor
 The ```./setup.sh``` support following options:
 * ```--with-thanos```adds Thanos Query component exposed via gPRC enabled ingress.
 ![Cross Cluster Observability with Thanos](images/observability-thanos.jpg)
+Check [thanos-observer](https://github.com/nickytd/thanos-observer) for a docker compose based setup of the observer side. 
 
 * ```--with-blackbox-exporter``` installs blackbox exporter with a predefined set of url targets
 * ```--with-karma``` installs karma application for alert viewing
