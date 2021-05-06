@@ -70,8 +70,15 @@ do
 
     if [[ "$var" = "--with-thanos" ]]; then 
 
-        echo "creating thanos"
+        echo "creating thanos"        
         if [ -d $dir/ssl ]; then
+
+          kubectl create secret generic thanos-auth -n monitoring \
+            --from-file=$dir/ssl/ca.crt \
+            --from-file=$dir/ssl/tls.key \
+            --from-file=$dir/ssl/tls.crt \
+            --dry-run=client -o yaml | kubectl apply -f -
+
           kubectl create secret tls thanos.local.dev-tls -n monitoring \
             --cert=$dir/ssl/wildcard.crt \
             --key=$dir/ssl/wildcard.key \
