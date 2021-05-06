@@ -10,9 +10,9 @@ The main purpose is to suport learning and experimentation with an easy to recon
 # helm chart dependencies
 This project depends on following helm repositories which need to be added before setting up the monitoring stack
 
-* kube-prometheus-stack  ```helm repo add https://prometheus-community.github.io/helm-charts ```
-* bitnami ```https://charts.bitnami.com/bitnami```
-* stable ```https://charts.helm.sh/stable```
+* ```helm repo add kube-prometheus-stack  https://prometheus-community.github.io/helm-charts ```
+* ```helm repo add bitnami https://charts.bitnami.com/bitnami```
+* ```helm repo add stable https://charts.helm.sh/stable```
 
 The ```./setup.sh``` support following options
 ```--with-thanos```adds Thanos Query component exposed via gPRC enabled ingress.
