@@ -214,6 +214,26 @@ grafana:
         gnetId: 2322
         revision: 4
         datasource: Prometheus
+      istio_workload:
+        gnetId: 7630
+        revision: 65
+        datasource: Prometheus           
+      istio_service:
+        gnetId: 7636
+        revision: 65
+        datasource: Prometheus           
+      istio_mesh:
+        gnetId: 7639
+        revision: 65
+        datasource: Prometheus   
+      istio_control_plane:
+        gnetId: 7645
+        revision: 65
+        datasource: Prometheus
+      istio_performance:
+        gnetId: 11829
+        revision: 65
+        datasource: Prometheus  
   plugins:
     - grafana-piechart-panel
   sidecar:
