@@ -4,8 +4,17 @@ set -eo pipefail
 
 dir=$(dirname $0)
 
-echo "setting up monitoring stack"
-echo "options: --with-blackbox-exporter --with-karma --with-thanos"
+if [[ "$1" == "-h" ]]; then
+   echo "## installs kube prometheus stack ##"
+   echo "   supported options:"
+   echo "     --with-karma"
+   echo "         adds karma applicaiton linked to the alert manager"
+   echo "     --with-blackbox-exporter"
+   echo "         adds blackbox-exporter with default set of url targets"
+   echo "     --with-blackbox-exporter"
+   echo "         adds thanos query for cross cluster observability setup"
+   exit
+fi
 
 kubectl create namespace monitoring \
   --dry-run=client -o yaml | kubectl apply -f -
