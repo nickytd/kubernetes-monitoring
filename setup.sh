@@ -11,7 +11,7 @@ if [[ "$1" == "-h" ]]; then
    echo "         adds karma applicaiton linked to the alert manager"
    echo "     --with-blackbox-exporter"
    echo "         adds blackbox-exporter with default set of url targets"
-   echo "     --with-blackbox-exporter"
+   echo "     --with-thanos"
    echo "         adds thanos query for cross cluster observability setup"
    exit
 fi
