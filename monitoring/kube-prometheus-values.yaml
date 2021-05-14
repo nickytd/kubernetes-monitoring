@@ -53,11 +53,11 @@ prometheus:
     externalUrl: https://prometheus.local.dev
     resources: 
       requests:
-        memory: 100Mi
-        cpu: "0.1"
+        memory: 200Mi
+        cpu: "100m"
       limits:
-        memory: 500Mi  
-        cpu: "1"
+        memory: 1000Mi  
+        cpu: "1000m"
     additionalAlertRelabelConfigs:
     - separator: ;
       regex: label_(.+)
