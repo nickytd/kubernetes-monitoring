@@ -1,0 +1,29 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: prometheus-health-check
+  namespace: monitoring
+  labels:
+    app: prometheus
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/rewrite-target: "/-/healthy"
+    nginx.ingress.kubernetes.io/proxy-http-version: "1.1"
+    haproxy.org/path-rewrite: "/-/healthy"
+    haproxy.org/ssl-redirect: "true"
+spec:
+  tls:
+  - hosts:
+    - prometheus-health-check.local.dev
+    secretName: prometheus-tls    
+  rules:
+  - host: prometheus-health-check.local.dev
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend: 
+          service:
+            name: monitoring-kube-prometheus-prometheus
+            port:
+              number: 9090
