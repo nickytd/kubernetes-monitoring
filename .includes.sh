@@ -4,7 +4,7 @@ function check_helm_chart {
 
   found=`helm search repo $chart | tail -n +2`
 
-  if [ $found = "No results found" ]; then
+  if [ "$found" = "No results found" ]; then
   	 echo "Helm chart $chart not found"
   	 exit
   fi	
