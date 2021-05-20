@@ -3,6 +3,10 @@
 set -eo pipefail
 
 dir=$(dirname $0)
+source $dir/.includes.sh
+
+check_executables
+check_helm_chart "prometheus-community/kube-prometheus-stack"
 
 if [[ "$1" == "-h" ]]; then
    echo "## installs kube prometheus stack ##"
@@ -48,6 +52,8 @@ done
 for var in "$@"
 do
     if [[ "$var" = "--with-karma" ]]; then
+
+      check_helm_chart "stable/karma"
   
       if [ -d $dir/ssl ]; then
         kubectl create secret tls "karma-tls" -n monitoring \
@@ -64,7 +70,7 @@ do
 
     if [[ "$var" = "--with-blackbox-exporter" ]]; then 
 
-      echo "creating blackbox-exporter"
+      check_helm_chart "prometheus-community/prometheus-blackbox-exporter"
 
       if [ -d $dir/ssl ]; then
         kubectl create secret tls "blackbox-exporter-tls" -n monitoring \
@@ -79,7 +85,8 @@ do
 
     if [[ "$var" = "--with-thanos" ]]; then 
 
-        echo "creating thanos"        
+        check_helm_chart "bitnami/thanos"        
+        
         if [ -d $dir/ssl ]; then
 
           kubectl create secret generic thanos-auth -n monitoring \
