@@ -14,7 +14,7 @@ kube-state-metrics:
 
 prometheusOperator:
   logFormat: json
-  logLevel: warn  
+  logLevel: warn
    
 prometheus:
   ingress:
@@ -35,7 +35,7 @@ prometheus:
     logFormat: json
     ### Thanos
     thanos:
-      version: v0.20.1
+      version: v0.20.2
       logLevel: warn
       logFormat: json
       listenLocal: false
@@ -51,6 +51,12 @@ prometheus:
     serviceMonitorSelectorNilUsesHelmValues: false
     podMonitorSelectorNilUsesHelmValues: false
     externalUrl: https://prometheus.local.dev
+    #enables thanos sidecar prometheus endpoint
+    podMetadata:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/path: "/metrics"
+        prometheus.io/port: "10902"
     resources: 
       requests:
         memory: 200Mi
@@ -77,6 +83,7 @@ prometheus:
       replacement: /develop-01/${1}    
     additionalScrapeConfigs:      
       # additional configs for pod annotations
+      # used by thanos sidecar
       - job_name: 'kubernetes-pods'
         kubernetes_sd_configs:
         - role: pod
