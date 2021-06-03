@@ -105,6 +105,8 @@ do
         -f $dir/monitoring/thanos-values.yaml bitnami/thanos \
         --install --wait --timeout 15m  
 
+        kubectl apply -f $dir/monitoring/thanos-sidecar.yaml -n monitoring
+
     fi
 
 done

@@ -1,0 +1,41 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/component: prometheus-sidecar
+    app.kubernetes.io/instance: thanos-sidecar
+    app.kubernetes.io/name: thanos-sidecar    
+  name: monitoring-kube-prometheus-thanos-sidecar
+  namespace: monitoring
+spec:
+  clusterIP: None
+  ports:
+  - name: http
+    port: 10902
+    targetPort: 10902
+  selector:
+    app.kubernetes.io/name: prometheus
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    app.kubernetes.io/component: prometheus-sidecar
+    app.kubernetes.io/instance: thanos-sidecar
+    app.kubernetes.io/name: thanos-sidecar    
+  name: thanos-sidecar
+  namespace: monitoring
+spec:
+  endpoints:
+  - port: http
+    relabelings:
+    - separator: /
+      sourceLabels:
+      - namespace
+      - pod
+      targetLabel: instance
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: prometheus-sidecar
+      app.kubernetes.io/instance: thanos-sidecar
+      app.kubernetes.io/name: thanos-sidecar    

@@ -52,11 +52,6 @@ prometheus:
     podMonitorSelectorNilUsesHelmValues: false
     externalUrl: https://prometheus.local.dev
     #enables thanos sidecar prometheus endpoint
-    podMetadata:
-      annotations:
-        prometheus.io/scrape: "true"
-        prometheus.io/path: "/metrics"
-        prometheus.io/port: "10902"
     resources: 
       requests:
         memory: 200Mi
