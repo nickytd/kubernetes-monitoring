@@ -55,10 +55,10 @@ prometheus:
     resources: 
       requests:
         memory: 200Mi
-        cpu: "100m"
+        cpu: 1
       limits:
         memory: 1000Mi  
-        cpu: "1000m"
+        cpu: 1
     additionalAlertRelabelConfigs:
     - separator: ;
       regex: label_(.+)
@@ -120,10 +120,10 @@ prometheus-node-exporter:
       hostPath: /var/run/dbus/system_bus_socket
   resources:
     limits:
-      cpu: 1
+      cpu: 500m
       memory: 500Mi
     requests:
-      cpu: 100m
+      cpu: 500m
       memory: 100Mi    
 
 
@@ -166,7 +166,7 @@ grafana:
         interval: Daily
         timeField: "@timestamp"
         esVersion: 70
-        logMessageField: message
+        logMessageField: log
         tlsSkipVerify: true
       secureJsonData:
         basicAuthPassword: esadmin
@@ -182,7 +182,7 @@ grafana:
         interval: Daily
         timeField: "@timestamp"
         esVersion: 70
-        logMessageField: message
+        logMessageField: MESSAGE
         tlsSkipVerify: true
       secureJsonData:
         basicAuthPassword: esadmin    
