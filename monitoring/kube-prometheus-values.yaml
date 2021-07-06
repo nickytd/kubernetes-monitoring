@@ -144,6 +144,8 @@ alertmanager:
 
 
 grafana:
+  image:
+    tag: 7.5.9
   ingress:
     enabled: true
     hosts:
