@@ -156,11 +156,11 @@ grafana:
         - grafana.local.dev
       secretName: grafana-tls
   additionalDataSources:
-    - name: elk-containers
+    - name: efk-containers
       type: elasticsearch
       access: proxy
       database: "[containers-]YYYY.MM.DD"
-      url: https://elk-client.logging.svc:9200
+      url: https://efk-client.logging.svc:9200
       basicAuth: true
       basicAuthUser: esadmin
       editable: false
@@ -172,11 +172,11 @@ grafana:
         tlsSkipVerify: true
       secureJsonData:
         basicAuthPassword: esadmin
-    - name: elk-journals
+    - name: efk-systemd
       type: elasticsearch
       access: proxy
-      database: "[journals-]YYYY.MM.DD"
-      url: https://elk-client.logging.svc:9200
+      database: "[systemd-]YYYY.MM.DD"
+      url: https://efk-client.logging.svc:9200
       basicAuth: true
       basicAuthUser: esadmin
       editable: false
@@ -184,7 +184,6 @@ grafana:
         interval: Daily
         timeField: "@timestamp"
         esVersion: 70
-        logMessageField: MESSAGE
         tlsSkipVerify: true
       secureJsonData:
         basicAuthPassword: esadmin    

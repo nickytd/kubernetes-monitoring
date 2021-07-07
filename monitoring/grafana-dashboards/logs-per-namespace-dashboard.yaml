@@ -36,13 +36,13 @@ data:
         "title": "Kibana Container Logs Dashboard",
         "tooltip": "Kibana Container Logs Dashboard",
         "type": "link",
-        "url": "https://kibana.local.dev/app/kibana?security_tenant=global#/dashboard/9419fb30-547c-11ea-ac0b-5b9ac52105c7?_g=(refreshInterval%3A(pause%3A!t%2Cvalue%3A0)%2Ctime%3A(from%3Anow-15m,to%3Anow))"
+        "url": "https://kibana.local.dev/app/kibana"
       }
     ],
     "panels": [
       {
         "cacheTimeout": null,
-        "datasource": "elk-containers",
+        "datasource": "efk-containers",
         "description": "",
         "fieldConfig": {
           "defaults": {
@@ -54,7 +54,7 @@ data:
             "links": [
               {
                 "title": "namespace logs",
-                "url": "/d/k8s-logs-per-namespace-v2/logs-per-namespace?var-namespace=${__data.fields[0].text}&${__url_time_range}"
+                "url": "/d/k8s-logs-per-namespace-v3/logs-per-namespace?var-namespace=${__data.fields[0].text}&${__url_time_range}"
               }
             ],
             "mappings": [],
@@ -131,7 +131,7 @@ data:
         "type": "table"
       },
       {
-        "datasource": "elk-containers",
+        "datasource": "efk-containers",
         "description": "",
         "fieldConfig": {
           "defaults": {
@@ -145,7 +145,7 @@ data:
             "links": [
               {
                 "title": "pod logs",
-                "url": "/d/k8s-logs-per-namespace-v2/logs-per-namespace?var-pod=${__data.fields[0].text}&${__url_time_range}"
+                "url": "/d/k8s-logs-per-namespace-v3/logs-per-namespace?var-pod=${__data.fields[0].text}&${__url_time_range}"
               }
             ],
             "mappings": [],
@@ -180,7 +180,7 @@ data:
           "sortBy": [
             {
               "desc": false,
-              "displayName": "kubernetes.pod.name.keyword"
+              "displayName": "kubernetes.pod_name"
             }
           ]
         },
@@ -223,7 +223,7 @@ data:
         "bars": false,
         "dashLength": 10,
         "dashes": false,
-        "datasource": "elk-containers",
+        "datasource": "efk-containers",
         "decimals": 0,
         "description": "",
         "fieldConfig": {
@@ -357,7 +357,7 @@ data:
         }
       },
       {
-        "datasource": "elk-containers",
+        "datasource": "efk-containers",
         "fieldConfig": {
           "defaults": {},
           "overrides": []
@@ -432,7 +432,7 @@ data:
             "text": "All",
             "value": "$__all"
           },
-          "datasource": "elk-containers",
+          "datasource": "efk-containers",
           "definition": "{\"find\": \"terms\", \"field\": \"kubernetes.namespace_name\"}",
           "description": null,
           "error": null,
@@ -460,7 +460,7 @@ data:
             "text": "All",
             "value": "$__all"
           },
-          "datasource": "elk-containers",
+          "datasource": "efk-containers",
           "definition": "{\"find\": \"terms\", \"field\": \"kubernetes.pod_name\", \"query\": \"kubernetes.namespace_name:$namespace\"}",
           "description": null,
           "error": null,
@@ -504,5 +504,5 @@ data:
     "timezone": "",
     "title": "Logs per Namespace",
     "uid": "logs-per-namespace",
-    "version": 2
+    "version": 3
     }
